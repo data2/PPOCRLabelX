@@ -17,9 +17,11 @@ PPOCRLabelX自动标注扩展工具，基于飞桨PPOCRLabel。
 
 ## 快速启动
 
-```
+```shell
+
 pip install -r PPOCRLabelX/PPOCRLabel/requirements.txt
 python PPOCRLabelX/PPOCRLabel/PPOCRLabelX.py
+
 ```
 
 
