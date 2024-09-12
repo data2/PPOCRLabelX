@@ -105,7 +105,7 @@ For the performance comparison between PP-OCR series models, please check the [b
 <a name="52"></a>
 ### 5.2 Model training / compression / deployment
 
-For more tutorials, including model training, model compression, deployment, etc., please refer to [tutorials](../../README.md#Tutorials)。
+For more tutorials, including model training, model compression, deployment, etc., please refer to [tutorials](../../README2#Tutorials)。
 
 <a name="6"></a>
 ## 6. Model zoo
@@ -123,4 +123,4 @@ For more tutorials, including model training, model compression, deployment, etc
 
 For more model downloads (including multiple languages), please refer to [PP-OCR series model downloads](./models_list_en.md).
 
-For a new language request, please refer to [Guideline for new language_requests](../../README.md#language_requests).
+For a new language request, please refer to [Guideline for new language_requests](../../README2#language_requests).

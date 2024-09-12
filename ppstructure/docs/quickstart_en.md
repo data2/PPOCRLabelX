@@ -316,4 +316,4 @@ Most of the parameters are consistent with the PaddleOCR whl package, see [whl p
 <a name="3"></a>
 ## 3. Summary
 
-Through the content in this section, you can master the use of PP-Structure related functions through PaddleOCR whl package. Please refer to [documentation tutorial](../../README.md) for more detailed usage tutorials including model training, inference and deployment, etc.
+Through the content in this section, you can master the use of PP-Structure related functions through PaddleOCR whl package. Please refer to [documentation tutorial](../../README2) for more detailed usage tutorials including model training, inference and deployment, etc.

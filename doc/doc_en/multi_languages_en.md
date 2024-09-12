@@ -177,7 +177,7 @@ PPOCR supports using your own data for custom training or fine-tune, where the r
 Modify the training data path, dictionary and other parameters.
 
 For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,
-For functions such as data annotation, you can read the complete [Document Tutorial](../../README.md).
+For functions such as data annotation, you can read the complete [Document Tutorial](../../README2).
 
 
 <a name="inference"></a>
