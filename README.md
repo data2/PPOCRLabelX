@@ -15,6 +15,11 @@ PPOCRLabelX自动标注扩展工具，基于飞桨PPOCRLabel。
     <img src="./PPOCRLabel/data/ppocrlabelx.png" width="800">
 </div>
 
+## 快速启动
+
+```
+python PPOCRLabelX/PPOCRLabel/PPOCRLabelX.py
+```
 
 
 <a name="许可证书"></a>
