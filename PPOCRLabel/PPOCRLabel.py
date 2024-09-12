@@ -21,14 +21,17 @@ import os.path
 import platform
 import subprocess
 import sys
+import time
+
 import xlrd
 from functools import partial
 
-from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPointF, QProcess
-from PyQt5.QtGui import QImage, QCursor, QPixmap, QImageReader
+from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPointF, QProcess, QBasicTimer
+from PyQt5.QtGui import QImage, QCursor, QPixmap, QImageReader, QPainter
 from PyQt5.QtWidgets import QMainWindow, QListWidget, QVBoxLayout, QToolButton, QHBoxLayout, QDockWidget, QWidget, \
-    QSlider, QGraphicsOpacityEffect, QMessageBox, QListView, QScrollArea, QWidgetAction, QApplication, QLabel, QGridLayout, \
-    QFileDialog, QListWidgetItem, QComboBox, QDialog, QAbstractItemView, QSizePolicy
+    QSlider, QGraphicsOpacityEffect, QMessageBox, QListView, QScrollArea, QWidgetAction, QApplication, QLabel, \
+    QGridLayout, \
+    QFileDialog, QListWidgetItem, QComboBox, QDialog, QAbstractItemView, QSizePolicy, QDesktopWidget, QProgressBar
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 
@@ -83,7 +86,7 @@ class MainWindow(QMainWindow):
 
         # Load string bundle for i18n
         if lang not in ['ch', 'en']:
-            lang = 'en'
+            lang = 'cn'
         self.stringBundle = StringBundle.getBundle(localeStr='zh-CN' if lang == 'ch' else 'en')  # 'en'
         getStr = lambda strId: self.stringBundle.getString(strId)
 
@@ -2781,6 +2784,73 @@ class MainWindow(QMainWindow):
             self.actions.save.setEnabled(True)
 
 
+class HomeWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle('PPOCRLabelX 启动中')
+        self.setGeometry(550, 400, 500, 300)
+
+        self.background_pixmap = QPixmap('./data/ppocrlabelx.png')  # 替换为你的图片路径
+
+        self.progress_bar = QProgressBar(self)
+        self.progress_bar.setGeometry(50, 260, 420,20)
+        self.progress_bar.setMaximum(100)
+
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_progress_bar)
+        self.timer.start(50)  # Update every 100 milliseconds
+
+        self.current_progress = 0
+
+        self.show()
+        self.turnToMain()
+
+    def paintEvent(self, event):
+        # 调用基类的paintEvent以确保窗口被正确绘制（虽然在这个简单的例子中可能不是必需的）
+        super().paintEvent(event)
+        # 创建一个QPainter对象来绘制
+        painter = QPainter(self)
+        # 绘制背景图片
+        # 注意：这里我们假设图片的大小与窗口的大小相匹配。如果不匹配，你可能需要调整绘制区域或使用QPixmap的scaled方法
+        painter.drawPixmap(self.rect(), self.background_pixmap)
+
+    def update_progress_bar(self):
+        self.current_progress += 1
+        self.progress_bar.setValue(self.current_progress)
+
+        if self.current_progress >= 100:
+            self.timer.stop()
+            self.hide()
+            self.mainWin.show()
+
+
+
+    def getDone(self):
+        print(self.current_progress == 100)
+        return self.current_progress == 100
+
+    def turnToMain(self):
+        # Tzutalin 201705+: Accept extra arguments to change predefined class file
+        arg_parser = argparse.ArgumentParser()
+        arg_parser.add_argument("--lang", type=str, default='cn', nargs="?")
+        arg_parser.add_argument("--gpu", type=str2bool, default=True, nargs="?")
+        arg_parser.add_argument("--kie", type=str2bool, default=False, nargs="?")
+        arg_parser.add_argument("--predefined_classes_file",
+                                default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
+                                nargs="?")
+
+        argv = sys.argv
+        args = arg_parser.parse_args(argv[1:])
+        self.mainWin = MainWindow(lang=args.lang,
+                         gpu=args.gpu,
+                         kie_mode=args.kie,
+                         default_predefined_class_file=args.predefined_classes_file)
+
+
+
 def inverted(color):
     return QColor(*[255 - v for v in color.getRgb()])
 
@@ -2805,27 +2875,15 @@ def get_main_app(argv=[]):
     app = QApplication(argv)
     app.setApplicationName(__appname__)
     app.setWindowIcon(newIcon("app"))
-    # Tzutalin 201705+: Accept extra arguments to change predefined class file
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("--lang", type=str, default='en', nargs="?")
-    arg_parser.add_argument("--gpu", type=str2bool, default=True, nargs="?")
-    arg_parser.add_argument("--kie", type=str2bool, default=False, nargs="?")
-    arg_parser.add_argument("--predefined_classes_file",
-                            default=os.path.join(os.path.dirname(__file__), "data", "predefined_classes.txt"),
-                            nargs="?")
-    args = arg_parser.parse_args(argv[1:])
 
-    win = MainWindow(lang=args.lang,
-                     gpu=args.gpu,
-                     kie_mode=args.kie,
-                     default_predefined_class_file=args.predefined_classes_file)
-    win.show()
-    return app, win
+    homeWindow = HomeWindow()
+
+    return app, homeWindow
 
 
 def main():
     """construct main app and run it"""
-    app, _win = get_main_app(sys.argv)
+    app, _win = get_main_app()
     return app.exec_()
 
 
@@ -2838,3 +2896,10 @@ if __name__ == '__main__':
                             "directory resources.py "
 
     sys.exit(main())
+    # main()
+
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     demo = HomeWindow()
+#     demo.show()
+#     sys.exit(app.exec_())
