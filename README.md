@@ -7,15 +7,15 @@
     <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
 </p>
 
-## 简介
+## introduce
 
-PPOCRLabelX自动标注扩展工具，基于飞桨PPOCRLabel。
+PPOCRLabelX automatic labeling extension tool, based on flying paddle PPOCRLabel.
 
 <div align="center">
     <img src="./PPOCRLabel/data/ppocrlabelx.png" width="800">
 </div>
 
-## 快速启动
+## quick start
 
 ```shell
 
@@ -27,5 +27,5 @@ python PPOCRLabelX/PPOCRLabel/PPOCRLabelX.py
 
 <a name="许可证书"></a>
 
-## 许可证书
-本项目的发布受<a href="https://github.com/data2/PPOCRLabelX/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
+## license
+This project is released under the <a href="https://github.com/data2/PPOCRLabelX/blob/master/LICENSE">Apache 2.0 license</a> license.
